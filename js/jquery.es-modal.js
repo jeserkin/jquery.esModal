@@ -10,19 +10,34 @@
 
 	$.fn.esDialog = function(options)
 	{
-		$this    = $(this);
-		settings = $.fn.esDialog.defaults;
+		$this = $(this);
+
+		if (!$this.data('init'))
+		{
+			$this.data('init', true);
+		}
 
 		if (typeof options === 'string')
 		{
+			if ($this.data('init'))
+			{
+				settings = $this.data('settings');
+			}
+
 			doAction(options);
 		}
 		else
 		{
 			settings = $.extend({}, $.fn.esDialog.defaults, options);
+
+			if ($this.data('init'))
+			{
+				$this.data('settings', settings);
+			}
+
 			$.fn.esDialog.init();
 
-			if (false !== settings.auto_open)
+			if (false !== settings.autoOpen)
 			{
 				$.fn.esDialog.open();
 			}
@@ -38,16 +53,16 @@
 
 	$.fn.esDialog.defaults = {
 		title: '',
-		auto_open: true,
-		close_on_escape: false,
+		autoOpen: true,
+		closeOnEscape: false,
 		maxHeight: null,
 		position: {
 			of: $(window),
 			collision: 'none'
 		},
-		modal_title_id: '',
-		modal_content_id: '',
-		scroolable_background: false
+		innerBlockTitleIdentifier: '',
+		innerBlockIdentifier: '',
+		scroolableBackground: false
 	};
 
 	function createOverlay()
@@ -74,14 +89,14 @@
 	{
 		if ('' != options.title)
 		{
-			elem.find(options.modal_title_id).text(options.title);
+			elem.find(options.innerBlockTitleIdentifier).text(options.title);
 		}
 	}
 
 	function center(elem, options)
 	{
 		var maxHeight    = options.maxHeight;
-		var innerElement = $(elem.find(options.modal_content_id)[0]);
+		var innerElement = $(elem.find(options.innerBlockIdentifier)[0]);
 
 		if ( null === maxHeight )
 		{
@@ -119,7 +134,7 @@
 	{
 		drawTitle($this, settings);
 
-		if (true === settings.close_on_escape)
+		if (true === settings.closeOnEscape)
 		{
 			$(document).live('keyup', function(e)
 			{
@@ -140,10 +155,10 @@
 		if ($this.hasClass('es-modal'))
 		{
 			$this.removeClass('es-modal');
-			$this.find(settings.modal_content_id).removeAttr('style');
+			$this.find(settings.innerBlockIdentifier).removeAttr('style');
 		}
 
-		if (!settings.scroolable_background)
+		if (!settings.scroolableBackground)
 		{
 			$('body').css({overflowY: 'auto', overflowX: 'auto'});
 		}
@@ -156,7 +171,7 @@
 		destroyOverlay();
 		createOverlay();
 
-		if (!settings.scroolable_background)
+		if (!settings.scroolableBackground)
 		{
 			$('body').css({overflow: 'hidden'});
 		}
