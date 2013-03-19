@@ -33,18 +33,18 @@
 	<script type="text/javascript">
 		$(function()
 		{
-            var settings = {
-                closeOnEscape: true,
-                innerBlockIdentifier: '.inner-block',
-                maxHeight: '500px'
-            };
+          var settings = {
+            closeOnEscape: true,
+            innerBlockIdentifier: '.inner-block',
+            maxHeight: '500px'
+          };
 
-            $('.outer-block').esDialog(settings);
+          $('.outer-block').esDialog(settings);
 
-            $(window).resize(function()
-            {
-                $('.outer-block').esDialog('resize');
-            });
+          $(window).resize(function()
+          {
+            $('.outer-block').esDialog('resize');
+          });
 		});
 	</script>
 </body>
