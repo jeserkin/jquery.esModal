@@ -57,10 +57,11 @@
 		},
 		innerBlockTitleIdentifier: '',
 		innerBlockIdentifier: '',
-		scroolableBackground: false
+		scroolableBackground: false,
+		useOverlay: true
 	};
 
-	function createOverlay()
+	function createOverlay( useOverlay )
 	{
 		var style = $('<div class="es-modal-style"></div>');
 		style.appendTo('body');
@@ -70,7 +71,11 @@
 			".es-modal {z-index:1002; position:absolute !important; height:auto; outline:0; overflow:hidden; padding:.2em; background-color:#FFF;}" +
 			"</style>").appendTo(style);
 
-		$('<div class="es-modal-overlay"></div>').appendTo('body');
+		if ( useOverlay )
+		{
+			$('<div class="es-modal-overlay"></div>').appendTo('body');
+		}
+
 		$('.es-modal-overlay').show();
 	}
 
@@ -165,7 +170,7 @@
 	$.fn.esDialog.open = function()
 	{
 		destroyOverlay();
-		createOverlay();
+		createOverlay( settings.useOverlay );
 
 		if (!settings.scroolableBackground)
 		{
